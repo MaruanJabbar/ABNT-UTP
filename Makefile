@@ -1,49 +1,18 @@
-# =======================================================================
-# =                                                                     =
-# =                                                                     =
-# =	                         MAKEFILE: LATEX                            =
-# =                                                                     =
-# =                                                                     =
-# =======================================================================
-# -----------------------------------------------------------------------
-# - AUTOR:  Chauã Queirolo                                              -
-# -----------------------------------------------------------------------
+BIBTEX ?= bibtex.original
 
-# -----------------------------------------------------------------------
-#  Definicao das variaveis e caminhos
-# -----------------------------------------------------------------------
+.PHONY: all clean distclean
 
-CTEX  = pdflatex 
-CBIB  = bibtex 
-PROG  = acroread
+MAIN=trabalho
 
-OBJ   = trabalho 
-
-# -----------------------------------------------------------------------
-#  Regras de Compilacao				
-# -----------------------------------------------------------------------
-
-all: $(OBJ)
-
-# Redefinicao das regras de padroes
-
-%: 	%.tex referencias.bib
-	@$(CTEX) $@ $(OUT)
-	@$(CBIB) $@ $(OUT)
-	@$(CTEX) $@ $(OUT)
-	@$(CTEX) $@ $(OUT)
-
-%: 	%.tex 
-	@$(CTEX) $@ $(OUT)
-	@$(CTEX) $@ $(OUT)
-
-# ---------------------------------------------------------------
-# - Outros							-
-# ---------------------------------------------------------------
+all:
+	pdflatex -interaction=nonstopmode $(MAIN).tex
+	$(BIBTEX) $(MAIN)
+	pdflatex -interaction=nonstopmode $(MAIN).tex
+	pdflatex -interaction=nonstopmode $(MAIN).tex
 
 clean:
-	@rm -rf *.aux *.lsb *.lsg *.log *.blg *.toc *.lot *.lof *.idx *.ilg *.ind *.bbl *.out *.nav *.loalg  *.locod  *.logr *.loq *.brf
-rclean: 
-	@rm -rf *.aux *.lsb *.lsg *.log *.blg *.toc *.lot *.lof *.idx *.ilg *.ind *.bbl *.out *.nav *.loalg  *.locod  *.logr *.loq *.brf
-	@rm -rf *.ps *.dvi *.pdf
+	rm -f *.aux *.bbl *.bcf *.blg *.fdb_latexmk *.fls *.idx *.ilg *.ind *.lof *.log *.lot *.out *.toc *.acn *.acr *.alg *.glg *.glo *.gls *.ist *.lol *.loa *.loc *.los *.synctex.gz *.nav *.snm *.vrb
 
+
+distclean: clean
+	rm -f $(MAIN).pdf
